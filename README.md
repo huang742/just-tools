@@ -24,3 +24,20 @@
 ## 扩展说明
 - 新工具以模块形式放在 `js/tools/` 下，导出 `{ id, label, tools: [...] }` 结构，并在 `js/app.js` 中注册即可。
 - 界面和逻辑保持无依赖的原生实现，便于低资源环境部署。
+
+## Docker 部署
+1. 构建镜像  
+   ```bash
+   docker build -t just-tools:latest .
+   ```
+2. 本地运行（监听 8080）  
+   ```bash
+   docker run --rm -p 8080:80 just-tools:latest
+   ```
+3. 服务器部署（推荐使用 `--pull` 以获取基础镜像更新）  
+   ```bash
+   docker build --pull -t your-registry/just-tools:latest .
+   docker push your-registry/just-tools:latest
+   docker run -d --name just-tools -p 80:80 your-registry/just-tools:latest
+   ```
+镜像基于轻量的 `nginx:alpine`，仅包含静态资源，无额外运行时依赖。
